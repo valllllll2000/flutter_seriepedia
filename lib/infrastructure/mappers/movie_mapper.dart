@@ -17,7 +17,7 @@ class MovieMapper {
       popularity: moviedb.popularity,
       posterPath: moviedb.posterPath != ''
           ? 'https://image.tmdb.org/t/p/w500/${moviedb.posterPath}'
-          : 'no-poster',
+          : 'https://freepng.com/uploads/images/202308/funny-bathroom-phrases-no-selfies-in-the-bathromm-vector-poster_1020x-3357.jpg',
       releaseDate: moviedb.releaseDate,
       title: moviedb.title,
       video: moviedb.video,
@@ -37,7 +37,7 @@ class MovieMapper {
       popularity: movieDetails.popularity,
       posterPath: movieDetails.posterPath != ''
           ? 'https://image.tmdb.org/t/p/w500/${movieDetails.posterPath}'
-          : 'no-poster',
+          : 'https://freepng.com/uploads/images/202308/funny-bathroom-phrases-no-selfies-in-the-bathromm-vector-poster_1020x-3357.jpg',
       releaseDate: movieDetails.releaseDate,
       title: movieDetails.title,
       video: movieDetails.video,
