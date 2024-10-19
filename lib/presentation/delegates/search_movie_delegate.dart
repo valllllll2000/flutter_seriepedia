@@ -61,20 +61,6 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
             }
           })
     ];
-    /*return [
-      FadeIn(
-          animate: query.isNotEmpty,
-          duration: const Duration(milliseconds: 200),
-          child: IconButton(
-              onPressed: () => query = '', icon: const Icon(Icons.clear))),
-      SpinPerfect(
-          duration: const Duration(milliseconds: 20),
-          spins: 10,
-          infinite: true,
-          child: IconButton(
-              onPressed: () => query = '',
-              icon: const Icon(Icons.refresh_rounded)))
-    ];*/
   }
 
   @override

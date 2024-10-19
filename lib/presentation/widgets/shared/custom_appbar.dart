@@ -22,17 +22,9 @@ class CustomAppbar extends ConsumerWidget {
             width: double.infinity,
             child: Row(
               children: [
-                Icon(
-                  Icons.movie_outlined,
-                  color: colors.primary,
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  'Cinemapedia',
-                  style: titleStyle,
-                ),
+                Icon(Icons.movie_outlined,color: colors.primary,),
+                const SizedBox(width: 5,),
+                Text('Cinemapedia', style: titleStyle,),
                 const Spacer(),
                 IconButton(
                     onPressed: () {
@@ -47,7 +39,7 @@ class CustomAppbar extends ConsumerWidget {
                                 .searchMoviesByQuery, initialMovies: searchedMovies),
                       ).then((movie) {
                         if (movie == null) return;
-                        context.push('/movie/${movie.id}');
+                        context.push('/home/0/movie/${movie.id}');
                       });
                     },
                     icon: const Icon(Icons.search)),
