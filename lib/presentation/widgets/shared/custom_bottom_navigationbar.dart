@@ -1,4 +1,3 @@
-import 'package:cinemapedia/config/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,7 +19,7 @@ class CustomBottomNavigation extends StatelessWidget {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_max), label: 'Start'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.label_outline), label: 'Categories'),
+              icon: Icon(Icons.label_outline), label: 'TV Shows'),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite_outline), label: 'Favorites'),
         ]);

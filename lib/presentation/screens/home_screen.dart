@@ -1,7 +1,8 @@
+import 'package:cinemapedia/presentation/views/series/series.dart';
 import 'package:cinemapedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
-import '../../views/views.dart';
+import '../views/views.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String name = "home-screen";
@@ -11,7 +12,7 @@ class HomeScreen extends StatelessWidget {
 
   final viewRoutes = const <Widget> [
     HomeView(),
-    SizedBox(),
+    SeriesView(),
     FavoritesView()
   ];
 
