@@ -1,6 +1,6 @@
 # cinemapedia
 
-Flutter app created while doing a course on Udemy:
+Flutter app created while doing a course on Udemy: https://fernando-herrera.com/course/flutter-cero-experto
 
 
 To add a new dependency
