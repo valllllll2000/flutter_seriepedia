@@ -1,4 +1,4 @@
-class Show {
+class Serie {
   final int id;
   final String originalLanguage;
   final String originalName;
@@ -7,7 +7,7 @@ class Show {
   final String posterPath;
   final String backdropPath;
 
-  Show(
+  Serie(
       {required this.id,
       required this.originalLanguage,
       required this.originalName,

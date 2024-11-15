@@ -1,5 +1,5 @@
-import '../entities/show.dart';
+import '../entities/serie.dart';
 
-abstract class TVDatasource {
-  Future<List<Show>> getPopularList();
+abstract class SeriesDatasource {
+  Future<List<Serie>> getPopularList({int page});
 }

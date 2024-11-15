@@ -1,9 +1,9 @@
-import 'package:cinemapedia/presentation/providers/shows/popular_shows_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-import '../../../domain/entities/show.dart';
+import '../../../domain/entities/serie.dart';
+import '../../providers/series/popular_shows_provider.dart';
 
 class SeriesView extends ConsumerStatefulWidget {
   const SeriesView({super.key});
@@ -20,7 +20,10 @@ class SeriesViewState extends ConsumerState<SeriesView> {
     super.initState();
     ref.read(popularShowsProvider.notifier).loadPopularShows();
     scrollController.addListener(() {
-      //TODO
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 200) {
+        ref.read(popularShowsProvider.notifier).loadPopularShows();
+      }
     });
   }
 
@@ -32,7 +35,7 @@ class SeriesViewState extends ConsumerState<SeriesView> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Show> shows = ref.watch(popularShowsProvider);
+    final List<Serie> shows = ref.watch(popularShowsProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: MasonryGridView.count(
@@ -49,7 +52,9 @@ class SeriesViewState extends ConsumerState<SeriesView> {
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(show.posterPath),
               ),
-              SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               Text(show.originalName)
             ],
           );
@@ -57,6 +62,4 @@ class SeriesViewState extends ConsumerState<SeriesView> {
       ),
     );
   }
-
-
 }
