@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/serie.dart';
 import '../../providers/series/popular_shows_provider.dart';
@@ -46,17 +47,20 @@ class SeriesViewState extends ConsumerState<SeriesView> {
         crossAxisSpacing: 10,
         itemBuilder: (context, index) {
           final show = shows[index];
-          return Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(show.posterPath),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(show.originalName)
-            ],
+          return GestureDetector(
+            onTap: () => context.push('/home/0/tv/${show.id}'),
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(show.posterPath),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(show.originalName)
+              ],
+            ),
           );
         },
       ),

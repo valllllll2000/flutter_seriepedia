@@ -1,3 +1,4 @@
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:cinemapedia/presentation/providers/providers.dart';
@@ -29,6 +30,9 @@ class HomeViewState extends ConsumerState<HomeView> {
   Widget build(BuildContext context) {
     final initialLoading = ref.watch(initialLoadingProvider);
     if (initialLoading) return const FullScreenLoader();
+
+    FlutterNativeSplash.remove();
+
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final slideShowMovies = ref.watch(moviesSlideShowProvider);
     final popularMovies = ref.watch(popularMoviesProvider);
@@ -45,42 +49,42 @@ class HomeViewState extends ConsumerState<HomeView> {
         ),
         SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
-              return Column(
-                children: [
-                  MoviesSlideshow(movies: slideShowMovies),
-                  MovieHorizontalListView(
-                    movies: nowPlayingMovies,
-                    title: 'Now in the cinemas',
-                    subTitle: 'October 10',
-                    loadNextPage: () =>
-                        ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
-                  ),
-                  MovieHorizontalListView(
-                    movies: upComingMovies,
-                    title: 'Coming soon',
-                    subTitle: 'This month',
-                    loadNextPage: () =>
-                        ref.read(upComingMoviesProvider.notifier).loadNextPage(),
-                  ),
-                  MovieHorizontalListView(
-                    movies: popularMovies,
-                    title: 'Popular',
-                    loadNextPage: () =>
-                        ref.read(popularMoviesProvider.notifier).loadNextPage(),
-                  ),
-                  MovieHorizontalListView(
-                    movies: topRatedMovies,
-                    title: 'Favorites',
-                    subTitle: 'Of all times',
-                    loadNextPage: () =>
-                        ref.read(topRatedMoviesProvider.notifier).loadNextPage(),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  )
-                ],
-              );
-            }, childCount: 1))
+          return Column(
+            children: [
+              MoviesSlideshow(movies: slideShowMovies),
+              MovieHorizontalListView(
+                movies: nowPlayingMovies,
+                title: 'Now in the cinemas',
+                subTitle: 'October 10',
+                loadNextPage: () =>
+                    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+              ),
+              MovieHorizontalListView(
+                movies: upComingMovies,
+                title: 'Coming soon',
+                subTitle: 'This month',
+                loadNextPage: () =>
+                    ref.read(upComingMoviesProvider.notifier).loadNextPage(),
+              ),
+              MovieHorizontalListView(
+                movies: popularMovies,
+                title: 'Popular',
+                loadNextPage: () =>
+                    ref.read(popularMoviesProvider.notifier).loadNextPage(),
+              ),
+              MovieHorizontalListView(
+                movies: topRatedMovies,
+                title: 'Favorites',
+                subTitle: 'Of all times',
+                loadNextPage: () =>
+                    ref.read(topRatedMoviesProvider.notifier).loadNextPage(),
+              ),
+              const SizedBox(
+                height: 10,
+              )
+            ],
+          );
+        }, childCount: 1))
       ],
     );
   }

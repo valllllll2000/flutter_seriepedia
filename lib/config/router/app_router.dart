@@ -18,6 +18,13 @@ final appRouter = GoRouter(initialLocation: '/home/0', routes: [
             builder: (context, state) {
               final movieId = state.pathParameters['id'] ?? 'no-id';
               return MovieScreen(movieId: movieId);
+            }),
+        GoRoute(
+            path: 'tv/:id',
+            name: SerieScreen.name,
+            builder: (context, state) {
+              final movieId = state.pathParameters['id'] ?? 'no-id';
+              return SerieScreen(serieId: movieId);
             })
       ]),
   GoRoute(path: '/', redirect: (_, __) => '/home/0')
