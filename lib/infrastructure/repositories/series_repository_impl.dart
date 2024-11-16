@@ -1,14 +1,19 @@
-import 'package:cinemapedia/domain/datasources/TVDatasource.dart';
+import 'package:cinemapedia/domain/datasources/series_datasource.dart';
 import 'package:cinemapedia/domain/entities/serie.dart';
 import 'package:cinemapedia/domain/repositories/serie_repository.dart';
 
-class TVRepositoryImpl implements TVRepository {
+class SeriesRepositoryImpl implements SeriesRepository {
   final SeriesDatasource datasource;
 
-  TVRepositoryImpl({required this.datasource});
+  SeriesRepositoryImpl({required this.datasource});
 
   @override
   Future<List<Serie>> getPopularList(int page) {
     return datasource.getPopularList(page: page);
+  }
+
+  @override
+  Future<Serie?> getSerie(String serieId) {
+    return datasource.getSerie(serieId);
   }
 }

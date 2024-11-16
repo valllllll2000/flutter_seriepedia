@@ -10,8 +10,10 @@ dependencies:
   animate_do: ^3.3.4
   card_swiper: ^3.0.1
   dio: ^5.7.0
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.6
   flutter_dotenv: ^5.1.0
   flutter_native_splash: ^2.4.2
   flutter_riverpod: ^2.5.1
