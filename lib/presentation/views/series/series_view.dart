@@ -36,34 +36,78 @@ class SeriesViewState extends ConsumerState<SeriesView> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Serie> shows = ref.watch(popularShowsProvider);
+    final List<Serie> series = ref.watch(popularShowsProvider);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: MasonryGridView.count(
-        controller: scrollController,
-        crossAxisCount: 3,
-        itemCount: shows.length,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        itemBuilder: (context, index) {
-          final show = shows[index];
-          return GestureDetector(
-            onTap: () => context.push('/home/0/tv/${show.id}'),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(show.posterPath),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: CustomScrollView(controller: scrollController, slivers: <Widget>[
+        SliverAppBar(
+          pinned: false,
+          title: const Text('Popular TV Shows'),
+          actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+        ),
+        SliverGrid(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 8,
+            childAspectRatio: 0.5,
+          ),
+          delegate: SliverChildBuilderDelegate((context, index) {
+            final show = series[index];
+            return GestureDetector(
+              onTap: () => context.push('/home/0/tv/${show.id}'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: show.posterPath != null
+                        ? Image.network(
+                            show.posterPath!,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset('/assets/not-found'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(show.originalName)
+                ],
+              ),
+            );
+          }, childCount: series.length),
+        ),
+      /*      Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: MasonryGridView.count(
+            controller: scrollController,
+            crossAxisCount: 3,
+            itemCount: series.length,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            itemBuilder: (context, index) {
+              final show = series[index];
+              return GestureDetector(
+                onTap: () => context.push('/home/0/tv/${show.id}'),
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: show.posterPath != null
+                          ? Image.network(show.posterPath!)
+                          : Image.asset('/assets/not-found'),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(show.originalName)
+                  ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(show.originalName)
-              ],
-            ),
-          );
-        },
-      ),
+              );
+            },
+          ),
+        ),*/
+      ]),
     );
   }
 }

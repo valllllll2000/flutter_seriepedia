@@ -4,8 +4,8 @@ class Serie {
   final String originalName;
   final String overview;
   final double popularity;
-  final String posterPath;
-  final String backdropPath;
+  final String? posterPath;
+  final String? backdropPath;
 
   Serie(
       {required this.id,

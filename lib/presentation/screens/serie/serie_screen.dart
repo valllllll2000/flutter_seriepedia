@@ -28,18 +28,13 @@ class _MovieDetailContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: context.select((SerieDetailBloc bloc) {
-          print("New data: $bloc ");
-          print("isLoading ${bloc.state.isLoading}");
-          print("isNull serie ${bloc.state.serie == null}");
-          print("isError ${bloc.state.isError == true}");
-          return bloc.state.isLoading
-            ? const _LoadingSerie()
-            : bloc.state.serie == null || bloc.state.isError == true
-                ? const _ErrorSerie()
-                : _SerieWidget(bloc.state.serie!);
-        }));
+    return Scaffold(body: context.select((SerieDetailBloc bloc) {
+      return bloc.state.isLoading
+          ? const _LoadingSerie()
+          : bloc.state.serie == null || bloc.state.isError == true
+              ? const _ErrorSerie()
+              : _SerieWidget(bloc.state.serie!);
+    }));
   }
 }
 
@@ -61,26 +56,22 @@ class _SerieWidget extends StatelessWidget {
 }
 
 class _ErrorSerie extends StatelessWidget {
-  const _ErrorSerie({
-    super.key,
-  });
+  const _ErrorSerie();
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Serie not found :('),
     );
   }
 }
 
 class _LoadingSerie extends StatelessWidget {
-  const _LoadingSerie({
-    super.key,
-  });
+  const _LoadingSerie();
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: CircularProgressIndicator(
         strokeWidth: 2,
       ),
@@ -107,10 +98,12 @@ class _MovieDetails extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  serie.posterPath,
-                  width: size.width * 0.3,
-                ),
+                child: serie.backdropPath != null
+                    ? Image.network(
+                        serie.backdropPath!,
+                        width: size.width * 0.3,
+                      )
+                    : Image.asset('assets/notfound.jpg', width: size.width * 0.3),
               ),
               const SizedBox(
                 width: 10,
@@ -164,18 +157,7 @@ class _CustomSliverAppBar extends StatelessWidget {
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         background: Stack(
           children: [
-            SizedBox.expand(
-              child: Image.network(
-                serie.posterPath,
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress != null) {
-                    return const SizedBox();
-                  }
-                  return FadeIn(child: child);
-                },
-              ),
-            ),
+            SizedBox.expand(child: _BigImage(serie)),
             const CustomGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
@@ -197,5 +179,28 @@ class _CustomSliverAppBar extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _BigImage extends StatelessWidget {
+  final Serie serie;
+
+  const _BigImage(this.serie);
+
+  @override
+  Widget build(BuildContext context) {
+    final posterUrl = serie.posterPath ?? serie.backdropPath;
+    return posterUrl != null
+        ? Image.network(
+            posterUrl,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress != null) {
+                return const SizedBox();
+              }
+              return FadeIn(child: child);
+            },
+          )
+        : Image.asset('assets/notfound.jpg');
   }
 }
