@@ -1,5 +1,5 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:cinemapedia/presentation/blocs/serie_detail_bloc.dart';
+import 'package:cinemapedia/presentation/blocs/detail/serie_detail_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

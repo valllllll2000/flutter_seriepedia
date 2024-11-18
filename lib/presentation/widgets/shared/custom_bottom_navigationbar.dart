@@ -17,7 +17,6 @@ class CustomBottomNavigation extends StatelessWidget {
         currentIndex: selectedPageIndex,
         onTap: (value) => onItemTapped(context, value),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_max), label: 'Start'),
           BottomNavigationBarItem(
               icon: Icon(Icons.label_outline), label: 'TV Shows'),
           BottomNavigationBarItem(

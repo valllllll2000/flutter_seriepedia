@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,6 +37,7 @@ class SeriesViewState extends ConsumerState<SeriesView> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
     final textThemes = Theme.of(context).textTheme;
     final List<Serie> series = ref.watch(popularShowsProvider);
     return Padding(
@@ -57,93 +59,64 @@ class SeriesViewState extends ConsumerState<SeriesView> {
           delegate: SliverChildBuilderDelegate((context, index) {
             final show = series[index];
             return GestureDetector(
-              onTap: () => context.push('/home/0/tv/${show.id}'),
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: show.posterPath != null
-                          ? Image.network(
-                              show.posterPath!,
-                              fit: BoxFit.scaleDown,
-                            )
-                          : Image.asset('/assets/not-found'),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(show.originalName, maxLines: 1,),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      width: 150,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.star_half_outlined,
-                            color: Colors.yellow.shade800,
-                          ),
-                          const SizedBox(
-                            width: 3,
-                          ),
-                          Text(
-                            HumanFormats.number(show.voteAverage, 1),
-                            style: textThemes.bodyMedium
-                                ?.copyWith(color: Colors.yellow.shade800),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Spacer(),
-
-                          //Popularity
-                          Text(
-                            HumanFormats.number(show.popularity),
-                            style: textThemes.bodySmall,
+              onTap: () => context.push('/home/0/serie/${show.id}'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: show.posterPath != null
+                        ? Image.network(
+                            show.posterPath!,
+                            fit: BoxFit.scaleDown,
                           )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                        : Image.asset('/assets/not-found'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    show.originalName,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.star_half_outlined,
+                          color: Colors.yellow.shade800,
+                        ),
+                        const SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          HumanFormats.number(show.voteAverage, 1),
+                          style: textThemes.bodyMedium
+                              ?.copyWith(color: Colors.yellow.shade800),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Spacer(),
+
+                        //Popularity
+                        Text(
+                          HumanFormats.number(show.popularity),
+                          style: textThemes.bodySmall,
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
             );
           }, childCount: series.length),
         ),
-        /*      Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: MasonryGridView.count(
-            controller: scrollController,
-            crossAxisCount: 3,
-            itemCount: series.length,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            itemBuilder: (context, index) {
-              final show = series[index];
-              return GestureDetector(
-                onTap: () => context.push('/home/0/tv/${show.id}'),
-                child: Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: show.posterPath != null
-                          ? Image.network(show.posterPath!)
-                          : Image.asset('/assets/not-found'),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(show.originalName)
-                  ],
-                ),
-              );
-            },
-          ),
-        ),*/
       ]),
     );
   }

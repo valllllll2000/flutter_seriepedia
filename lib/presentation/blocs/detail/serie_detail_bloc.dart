@@ -4,7 +4,7 @@ import 'package:cinemapedia/infrastructure/repositories/series_repository_impl.d
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/serie.dart';
+import '../../../domain/entities/serie.dart';
 
 part 'serie_detail_event.dart';
 
