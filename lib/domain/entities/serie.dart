@@ -4,6 +4,7 @@ class Serie {
   final String originalName;
   final String overview;
   final double popularity;
+  final double voteAverage;
   final String? posterPath;
   final String? backdropPath;
 
@@ -13,6 +14,7 @@ class Serie {
       required this.originalName,
       required this.overview,
       required this.popularity,
+      required this.voteAverage,
       required this.posterPath,
       required this.backdropPath});
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../config/helpers/human_formats.dart';
 import '../../../domain/entities/serie.dart';
 import '../../providers/series/popular_shows_provider.dart';
 
@@ -36,6 +36,7 @@ class SeriesViewState extends ConsumerState<SeriesView> {
 
   @override
   Widget build(BuildContext context) {
+    final textThemes = Theme.of(context).textTheme;
     final List<Serie> series = ref.watch(popularShowsProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -43,7 +44,9 @@ class SeriesViewState extends ConsumerState<SeriesView> {
         SliverAppBar(
           pinned: false,
           title: const Text('Popular TV Shows'),
-          actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+          actions: [
+            IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+          ],
         ),
         SliverGrid(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -55,29 +58,63 @@ class SeriesViewState extends ConsumerState<SeriesView> {
             final show = series[index];
             return GestureDetector(
               onTap: () => context.push('/home/0/tv/${show.id}'),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: show.posterPath != null
-                        ? Image.network(
-                            show.posterPath!,
-                            fit: BoxFit.cover,
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: show.posterPath != null
+                          ? Image.network(
+                              show.posterPath!,
+                              fit: BoxFit.scaleDown,
+                            )
+                          : Image.asset('/assets/not-found'),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(show.originalName, maxLines: 1,),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.star_half_outlined,
+                            color: Colors.yellow.shade800,
+                          ),
+                          const SizedBox(
+                            width: 3,
+                          ),
+                          Text(
+                            HumanFormats.number(show.voteAverage, 1),
+                            style: textThemes.bodyMedium
+                                ?.copyWith(color: Colors.yellow.shade800),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          const Spacer(),
+
+                          //Popularity
+                          Text(
+                            HumanFormats.number(show.popularity),
+                            style: textThemes.bodySmall,
                           )
-                        : Image.asset('/assets/not-found'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(show.originalName)
-                ],
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             );
           }, childCount: series.length),
         ),
-      /*      Padding(
+        /*      Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: MasonryGridView.count(
             controller: scrollController,

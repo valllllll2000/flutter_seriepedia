@@ -9,6 +9,7 @@ class SerieMapper {
       originalName: apiSerie.originalName,
       overview: apiSerie.overview,
       popularity: apiSerie.popularity,
+      voteAverage: apiSerie.voteAverage,
       posterPath: Utils.imagePath(apiSerie.posterPath),
       backdropPath: Utils.imagePath(apiSerie.backdropPath));
 
@@ -19,6 +20,7 @@ class SerieMapper {
       originalName: json['original_name'],
       overview: json['overview'],
       popularity: json['popularity'],
+      voteAverage: json['vote_average'] ?? 0,
       posterPath: Utils.imagePathOrNull(json['poster_path']),
       backdropPath: Utils.imagePathOrNull(json['backdrop_path']));
 }
