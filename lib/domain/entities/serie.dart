@@ -21,11 +21,29 @@ class Serie {
   @override
   String toString() {
     return """
-    Serie {
-      id: $id,
-      originalLanguage: $originalLanguage,
-      originalName: $originalName,
+    Serie{
+    id: $id, 
+    originalLanguage: $originalLanguage, 
+    originalName: $originalName, 
+    overview: $overview, 
+    popularity: $popularity, 
+    voteAverage: $voteAverage, 
+    posterPath: $posterPath, 
+    backdropPath: $backdropPath
     }
     """;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'original_language': originalLanguage,
+      'original_name': originalName,
+      'overview': overview,
+      'popularity': popularity,
+      'vote_average': voteAverage,
+      'poster_path': posterPath,
+      'backdrop_path': backdropPath,
+    };
   }
 }

@@ -23,4 +23,15 @@ class SerieMapper {
       voteAverage: json['vote_average'] ?? 0,
       posterPath: Utils.imagePathOrNull(json['poster_path']),
       backdropPath: Utils.imagePathOrNull(json['backdrop_path']));
+
+  static Serie fromMapToSerie(Map<String, dynamic> map) => Serie(
+        id: map['id']?.toInt() ?? 0,
+        originalLanguage: map['original_language'] ?? '',
+        originalName: map['original_name'] ?? '',
+        overview: map['overview'] ?? '',
+        popularity: map['popularity']?.toDouble() ?? 0.0,
+        voteAverage: map['vote_average']?.toDouble() ?? 0.0,
+        posterPath: map['poster_path'],
+        backdropPath: map['backdrop_path'],
+      );
 }

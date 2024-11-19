@@ -1,20 +1,11 @@
 part of 'favorites_bloc.dart';
 
-abstract class FavoritesEvent {
-  final Serie serie;
-
-  FavoritesEvent({required this.serie});
-}
-
-class AddFavorite extends FavoritesEvent {
-  AddFavorite({required super.serie});
-}
-
-class RemoveFavorite extends FavoritesEvent {
-  RemoveFavorite({required super.serie});
-
-}
+abstract class FavoritesEvent {}
 
 class UpdateFavorite extends FavoritesEvent {
-  UpdateFavorite({required super.serie});
+  final Serie serie;
+
+  UpdateFavorite({required this.serie});
 }
+
+class LoadFavorites extends FavoritesEvent {}

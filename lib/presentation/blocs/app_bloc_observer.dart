@@ -1,4 +1,3 @@
-import 'package:cinemapedia/presentation/blocs/favorites/favorites_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// {@template app_bloc_observer}
@@ -11,7 +10,7 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    if (bloc is FavoritesBloc) print(change);
+    //if (bloc is Bloc) print(change);
   }
 
   @override
@@ -20,6 +19,6 @@ class AppBlocObserver extends BlocObserver {
       Transition<dynamic, dynamic> transition,
       ) {
     super.onTransition(bloc, transition);
-    print(transition);
+    //print(transition);
   }
 }

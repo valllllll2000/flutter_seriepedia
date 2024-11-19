@@ -19,9 +19,8 @@ class SerieDetailBloc extends Bloc<LoadSerieDetailEvent, SerieDetailState> {
     on<LoadSerieDetailEvent>((event, emit) async {
       try {
         emit(state.copyWith(isLoading: true));
-        await Future.delayed(const Duration(milliseconds: 1000));
+        await Future.delayed(const Duration(milliseconds: 300));
         final serie = await repository.getSerie(event.serieId);
-        print(serie);
         emit(state.copyWith(
             isError: serie == null, isLoading: false, serie: serie));
       } catch (e) {

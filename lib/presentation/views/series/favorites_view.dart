@@ -25,7 +25,7 @@ class _FavoritesContent extends StatelessWidget {
       return bloc.state.favorites.isEmpty
           ? const _NoFavoritesView()
           : SeriesMasonry(
-              series: bloc.state.favorites); //TODO: add load next page
+              series: bloc.state.favorites);
     }));
   }
 }

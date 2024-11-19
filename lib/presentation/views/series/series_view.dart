@@ -1,30 +1,30 @@
+import 'package:cinemapedia/presentation/blocs/list/series_list_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../config/helpers/human_formats.dart';
 import '../../../domain/entities/serie.dart';
-import '../../providers/series/popular_shows_provider.dart';
 
-class SeriesView extends ConsumerStatefulWidget {
+class SeriesView extends StatefulWidget {
   const SeriesView({super.key});
 
   @override
   SeriesViewState createState() => SeriesViewState();
 }
 
-class SeriesViewState extends ConsumerState<SeriesView> {
+class SeriesViewState extends State<SeriesView> {
   final scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    ref.read(popularShowsProvider.notifier).loadPopularShows();
+
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
           scrollController.position.maxScrollExtent - 200) {
-        ref.read(popularShowsProvider.notifier).loadPopularShows();
+        context.read<SeriesListBloc>().add(LoadNextPageEvent());
       }
     });
   }
@@ -39,7 +39,8 @@ class SeriesViewState extends ConsumerState<SeriesView> {
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
     final textThemes = Theme.of(context).textTheme;
-    final List<Serie> series = ref.watch(popularShowsProvider);
+    final Set<Serie> series =
+        context.select((SeriesListBloc bloc) => bloc.state.series);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: CustomScrollView(controller: scrollController, slivers: <Widget>[
@@ -57,7 +58,7 @@ class SeriesViewState extends ConsumerState<SeriesView> {
             childAspectRatio: 0.5,
           ),
           delegate: SliverChildBuilderDelegate((context, index) {
-            final show = series[index];
+            final show = series.elementAt(index);
             return GestureDetector(
               onTap: () => context.push('/home/0/serie/${show.id}'),
               child: Column(
