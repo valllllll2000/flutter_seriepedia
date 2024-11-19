@@ -1,5 +1,5 @@
 import '../../domain/entities/serie.dart';
-import '../models/moviedb/series_shows_response.dart';
+import '../models/moviedb/series_response.dart';
 import 'utils.dart';
 
 class SerieMapper {

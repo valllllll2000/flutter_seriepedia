@@ -2,16 +2,17 @@ import 'dart:async';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/config/helpers/human_formats.dart';
+import 'package:cinemapedia/presentation/widgets/poster_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/movie.dart';
+import '../../domain/entities/serie.dart';
 
-typedef SearchMoviesCallback = Future<List<Movie>> Function(String query);
+typedef SearchMoviesCallback = Future<List<Serie>> Function(String query);
 
-class SearchMovieDelegate extends SearchDelegate<Movie?> {
+class SearchMovieDelegate extends SearchDelegate<Serie?> {
   final SearchMoviesCallback searchMovies;
-  List<Movie> initialMovies;
-  StreamController<List<Movie>> debounceMovies = StreamController.broadcast();
+  List<Serie> initialMovies;
+  StreamController<List<Serie>> debounceMovies = StreamController.broadcast();
   StreamController<bool> isLoadingStream = StreamController.broadcast();
   Timer? _debounceTimer;
 
@@ -93,7 +94,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
           return ListView.builder(
               itemCount: movies.length,
               itemBuilder: (context, index) => _MovieItem(
-                    movie: movies[index],
+                    serie: movies[index],
                     onMovieSelected: (context, movie) {
                       clearStreams();
                       close(context, movie);
@@ -104,10 +105,10 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
 }
 
 class _MovieItem extends StatelessWidget {
-  final Movie movie;
+  final Serie serie;
   final Function onMovieSelected;
 
-  const _MovieItem({required this.movie, required this.onMovieSelected});
+  const _MovieItem({required this.serie, required this.onMovieSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +116,7 @@ class _MovieItem extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        onMovieSelected(context, movie);
+        onMovieSelected(context, serie);
       },
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -125,11 +126,7 @@ class _MovieItem extends StatelessWidget {
                 width: size.width * 0.2,
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      movie.posterPath,
-                      loadingBuilder: (context, child, loadingProgress) =>
-                          FadeIn(child: child),
-                    )),
+                    child: PosterWidget(serie: serie)),
               ),
               const SizedBox(
                 width: 10,
@@ -140,12 +137,12 @@ class _MovieItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      movie.title,
+                      serie.originalName,
                       style: textStyles.titleMedium,
                     ),
-                    (movie.overview.length > 100)
-                        ? Text('${movie.overview.substring(0, 100)}...')
-                        : Text(movie.overview),
+                    (serie.overview.length > 100)
+                        ? Text('${serie.overview.substring(0, 100)}...')
+                        : Text(serie.overview),
                     Row(
                       children: [
                         Icon(
@@ -156,7 +153,7 @@ class _MovieItem extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                          HumanFormats.number(movie.voteAverage, 1),
+                          HumanFormats.number(serie.voteAverage, 1),
                           style: textStyles.bodyMedium!
                               .copyWith(color: Colors.yellow.shade900),
                         ),

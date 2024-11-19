@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cinemapedia/presentation/widgets/poster_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
@@ -78,25 +79,8 @@ class _MoviePosterLink extends StatelessWidget {
       onTap: () => context.push('/home/0/serie/${serie.id}'),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: FadeInUp(child: _PosterWidget(serie: serie)),
+        child: FadeInUp(child: PosterWidget(serie: serie)),
       ),
     );
-  }
-}
-
-class _PosterWidget extends StatelessWidget {
-  const _PosterWidget({
-    required this.serie,
-  });
-
-  final Serie serie;
-
-  @override
-  Widget build(BuildContext context) {
-    if (serie.posterPath != null) {
-      return Image.network(serie.posterPath!);
-    } else {
-      return Image.asset('/assets/not-found');
-    }
   }
 }
