@@ -10,11 +10,8 @@ class FavoritesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FavoritesBloc(),
-      child: const Scaffold(
-        body: _FavoritesContent(),
-      ),
+    return const Scaffold(
+      body: _FavoritesContent(),
     );
   }
 }

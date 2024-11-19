@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../domain/entities/serie.dart';
 
 class SeriesMasonry extends StatefulWidget {
-  final List<Serie> series;
+  final Set<Serie> series;
   final VoidCallback? loadNextPage;
 
   const SeriesMasonry({super.key, required this.series, this.loadNextPage});
@@ -55,11 +55,11 @@ class _SeriesMasonryState extends State<SeriesMasonry> {
                   const SizedBox(
                     height: 40,
                   ),
-                  _MoviePosterLink(serie: widget.series[index])
+                  _MoviePosterLink(serie: widget.series.elementAt(index))
                 ],
               );
             }
-            return _MoviePosterLink(serie: widget.series[index]);
+            return _MoviePosterLink(serie: widget.series.elementAt(index));
           }),
     );
   }

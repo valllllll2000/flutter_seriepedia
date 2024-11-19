@@ -17,4 +17,15 @@ class Serie {
       required this.voteAverage,
       required this.posterPath,
       required this.backdropPath});
+
+  @override
+  String toString() {
+    return """
+    Serie {
+      id: $id,
+      originalLanguage: $originalLanguage,
+      originalName: $originalName,
+    }
+    """;
+  }
 }

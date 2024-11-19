@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/presentation/blocs/detail/serie_detail_bloc.dart';
+import 'package:cinemapedia/presentation/blocs/favorites/favorites_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,9 +16,13 @@ class SerieScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          SerieDetailBloc()..add(LoadSerieDetailEvent(serieId)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<SerieDetailBloc>(
+          create: (context) =>
+              SerieDetailBloc()..add(LoadSerieDetailEvent(serieId)),
+        ),
+      ],
       child: const _MovieDetailContainer(),
     );
   }
@@ -103,7 +108,8 @@ class _MovieDetails extends StatelessWidget {
                         serie.backdropPath!,
                         width: size.width * 0.3,
                       )
-                    : Image.asset('assets/notfound.jpg', width: size.width * 0.3),
+                    : Image.asset('assets/notfound.jpg',
+                        width: size.width * 0.3),
               ),
               const SizedBox(
                 width: 10,
@@ -140,19 +146,13 @@ class _CustomSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return SliverAppBar(
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.7,
       foregroundColor: Colors.white,
       shadowColor: Colors.red,
-      actions: [
-        IconButton(
-          onPressed: () async {
-            //TODO
-          },
-          icon: const Icon(Icons.favorite_border), //TODO
-        ),
-      ],
+      actions: [_FavoriteWidget(serie: serie)],
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         background: Stack(
@@ -160,25 +160,47 @@ class _CustomSliverAppBar extends StatelessWidget {
             SizedBox.expand(child: _BigImage(serie)),
             const CustomGradient(
               begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              stops: [0.0, 0.2],
-              colors: [Colors.black54, Colors.transparent],
-            ),
-            const CustomGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.8, 1.0],
-              colors: [Colors.transparent, Colors.black87],
+              end: Alignment.centerLeft,
+              stops: [0.0, 0.3],
+              colors: [
+                Colors.green,
+                Colors.transparent,
+              ],
             ),
             const CustomGradient(
               begin: Alignment.topLeft,
               stops: [0.0, 0.3],
-              colors: [Colors.black87, Colors.transparent],
+              colors: [Colors.green, Colors.transparent],
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+class _FavoriteWidget extends StatelessWidget {
+  const _FavoriteWidget({
+    required this.serie,
+  });
+
+  final Serie serie;
+
+  @override
+  Widget build(BuildContext context) {
+    return context.select((FavoritesBloc bloc) {
+      return IconButton(
+        onPressed: () {
+          context.read<FavoritesBloc>().add(UpdateFavorite(serie: serie));
+        },
+        icon: bloc.isFavorite(serie)
+            ? const Icon(
+                Icons.favorite_rounded,
+                color: Colors.red,
+              )
+            : const Icon(Icons.favorite_border),
+      );
+    });
   }
 }
 
