@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -36,7 +37,6 @@ class SeriesListBloc extends Bloc<SeriesListEvent, SeriesListState> {
               isError: false, isLoading: false, isLastBatch: true));
         }
       } catch (e) {
-        print(e);
         emit(state.copyWith(isError: true, isLoading: false));
       }
     });
@@ -46,7 +46,9 @@ class SeriesListBloc extends Bloc<SeriesListEvent, SeriesListState> {
 
   void printIfNeeded(Serie element) {
     if (element.originalName.toLowerCase().contains('midsomer')) {
-      print('page: $page, element: $element');
+      if (kDebugMode) {
+        print('page: $page, element: $element');
+      }
     }
   }
 }

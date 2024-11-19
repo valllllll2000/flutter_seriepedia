@@ -1,6 +1,7 @@
 import 'package:cinemapedia/domain/repositories/serie_repository.dart';
 import 'package:cinemapedia/infrastructure/datasources/series_moviedb_datasource.dart';
 import 'package:cinemapedia/infrastructure/repositories/series_repository_impl.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -24,7 +25,9 @@ class SerieDetailBloc extends Bloc<LoadSerieDetailEvent, SerieDetailState> {
         emit(state.copyWith(
             isError: serie == null, isLoading: false, serie: serie));
       } catch (e) {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
         emit(state.copyWith(isError: true, isLoading: false));
       }
     });

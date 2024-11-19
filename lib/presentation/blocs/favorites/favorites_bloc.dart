@@ -1,4 +1,3 @@
-import 'package:cinemapedia/domain/datasources/favorites_datasource.dart';
 import 'package:cinemapedia/infrastructure/datasources/sqlite_favorites_datasource.dart';
 import 'package:cinemapedia/infrastructure/repositories/favorites_repository_impl.dart';
 import 'package:cinemapedia/infrastructure/services/database_service_impl.dart';
