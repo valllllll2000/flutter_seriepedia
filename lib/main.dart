@@ -2,6 +2,7 @@ import 'package:cinemapedia/config/router/app_router.dart';
 import 'package:cinemapedia/presentation/blocs/app_bloc_observer.dart';
 import 'package:cinemapedia/presentation/blocs/favorites/favorites_bloc.dart';
 import 'package:cinemapedia/presentation/blocs/list/series_list_bloc.dart';
+import 'package:cinemapedia/presentation/blocs/search/search_series_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -29,6 +30,9 @@ class MainApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => SeriesListBloc(),
+        ),
+        BlocProvider(
+          create: (context) => SearchSeriesBloc(),
         ),
       ],
       child: MaterialApp.router(

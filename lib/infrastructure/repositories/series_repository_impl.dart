@@ -16,4 +16,9 @@ class SeriesRepositoryImpl implements SeriesRepository {
   Future<Serie?> getSerie(String serieId) {
     return datasource.getSerie(serieId);
   }
+
+  @override
+  Future<List<Serie>> getSearchList(int page, String query) {
+    return datasource.getSearchList(page, query);
+  }
 }

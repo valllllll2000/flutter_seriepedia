@@ -2,40 +2,43 @@ import 'dart:async';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/config/helpers/human_formats.dart';
+import 'package:cinemapedia/main.dart';
+import 'package:cinemapedia/presentation/blocs/search/search_series_bloc.dart';
 import 'package:cinemapedia/presentation/widgets/poster_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/serie.dart';
 
-typedef SearchMoviesCallback = Future<List<Serie>> Function(String query);
+typedef SearchSeriesCallback = Future<List<Serie>> Function(String query);
 
 class SearchMovieDelegate extends SearchDelegate<Serie?> {
-  final SearchMoviesCallback searchMovies;
-  List<Serie> initialMovies;
-  StreamController<List<Serie>> debounceMovies = StreamController.broadcast();
+ // final SearchSeriesCallback searchSeries;
+ // List<Serie> initialSeries;
+  StreamController<List<Serie>> debounceSeries = StreamController.broadcast();
   StreamController<bool> isLoadingStream = StreamController.broadcast();
   Timer? _debounceTimer;
 
   SearchMovieDelegate(
-      {required this.searchMovies, required this.initialMovies});
+      /*{required this.searchSeries, required this.initialSeries}*/);
 
   void clearStreams() {
-    debounceMovies.close();
+    debounceSeries.close();
   }
 
-  void _onQueryChanged(String query) {
+/*  void _onQueryChanged(String query) {
     isLoadingStream.add(true);
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
-      final movies = await searchMovies(query);
-      initialMovies = movies;
-      debounceMovies.add(movies);
+      //final series = await searchSeries(query);
+      //initialSeries = series;
+      debounceSeries.add(series);
       isLoadingStream.add(false);
     });
-  }
+  }*/
 
   @override
-  String get searchFieldLabel => 'Search movies';
+  String get searchFieldLabel => 'Search series';
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -76,26 +79,28 @@ class SearchMovieDelegate extends SearchDelegate<Serie?> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return buildResultsAndSuggestions();
+    return buildResultsAndSuggestions(context);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    _onQueryChanged(query);
-    return buildResultsAndSuggestions();
+    context.read<SearchSeriesBloc>().add(MakeQuery(query));
+    return buildResultsAndSuggestions(context);
   }
 
-  Widget buildResultsAndSuggestions() {
+  Widget buildResultsAndSuggestions(BuildContext context) {
+    final series =
+        context.select((SearchSeriesBloc bloc) => bloc.state.series);
     return StreamBuilder(
-        stream: debounceMovies.stream,
-        initialData: initialMovies,
+        stream: debounceSeries.stream,
+        initialData: series,
         builder: (context, snapshot) {
-          final movies = snapshot.data ?? [];
+          final series = snapshot.data ?? [];
           return ListView.builder(
-              itemCount: movies.length,
-              itemBuilder: (context, index) => _MovieItem(
-                    serie: movies[index],
-                    onMovieSelected: (context, movie) {
+              itemCount: series.length,
+              itemBuilder: (context, index) => _SerieItem(
+                    serie: series[index],
+                    onSerieSelected: (context, movie) {
                       clearStreams();
                       close(context, movie);
                     },
@@ -104,11 +109,11 @@ class SearchMovieDelegate extends SearchDelegate<Serie?> {
   }
 }
 
-class _MovieItem extends StatelessWidget {
+class _SerieItem extends StatelessWidget {
   final Serie serie;
-  final Function onMovieSelected;
+  final Function onSerieSelected;
 
-  const _MovieItem({required this.serie, required this.onMovieSelected});
+  const _SerieItem({required this.serie, required this.onSerieSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +121,7 @@ class _MovieItem extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        onMovieSelected(context, serie);
+        onSerieSelected(context, serie);
       },
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

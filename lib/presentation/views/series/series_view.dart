@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../config/helpers/human_formats.dart';
 import '../../../domain/entities/serie.dart';
+import '../../blocs/search/search_series_bloc.dart';
+import '../../delegates/search_movie_delegate.dart';
 
 class SeriesView extends StatefulWidget {
   const SeriesView({super.key});
@@ -48,7 +50,17 @@ class SeriesViewState extends State<SeriesView> {
           pinned: false,
           title: const Text('Popular TV Shows'),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+            IconButton(onPressed: () {
+              showSearch<Serie?>(
+                query: "",
+                context: context,
+                delegate: SearchMovieDelegate(),
+              ).then((serie) {
+                if (serie == null) return;
+                context.push('/home/0/serie/${serie.id}');
+              });
+            }, icon: const Icon(Icons.search)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.filter_list)),
           ],
         ),
         SliverGrid(

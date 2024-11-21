@@ -38,4 +38,15 @@ class SeriesMovieDbDatasource implements SeriesDatasource {
       return null;
     }
   }
+
+  @override
+  Future<List<Serie>> getSearchList(int page, String query) async {
+    final response = await dio.get('/search/tv',
+        queryParameters: {'page': page, 'query': query});
+    final tvResponse = SeriesResponse.fromJson(response.data);
+    List<Serie> shows = tvResponse.results
+        .map((e) => SerieMapper.fromResultToSerie(e))
+        .toList();
+    return shows;
+  }
 }

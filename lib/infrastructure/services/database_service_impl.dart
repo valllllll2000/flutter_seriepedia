@@ -14,13 +14,15 @@ class DatabaseServiceImpl extends DatabaseService {
       await db.execute('''
         CREATE TABLE $table (
           id INTEGER PRIMARY KEY,
+          adult INTEGER DEFAULT 0,
           original_language STRING NOT NULL,
           original_name STRING NOT NULL,
           overview STRING NOT NULL,
           popularity REAL NOT NULL,
           vote_average REAL NOT NULL,
           poster_path String,
-          backdrop_path String
+          backdrop_path String,
+          year INTEGER DEFAULT 0
         );
       ''');
     });
