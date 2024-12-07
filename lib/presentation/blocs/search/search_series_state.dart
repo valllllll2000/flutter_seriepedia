@@ -4,21 +4,21 @@ class SearchSeriesState extends Equatable {
   final bool isLoading;
   final bool isLastBatch;
   final bool isError;
-  final List<Serie> series;
+  final Set<Serie> series;
   final String lastQuery; //TODO: save to prefs or db
 
   const SearchSeriesState(
       {this.isLoading = false,
       this.isLastBatch = false,
       this.isError = false,
-      this.series = const [],
+      this.series = const {},
       this.lastQuery = ''});
 
   SearchSeriesState copyWith(
           {bool? isLoading,
           bool? isLastBatch,
           bool? isError,
-          List<Serie>? series,
+          Set<Serie>? series,
           String? lastQuery}) =>
       SearchSeriesState(
           isLoading: isLoading ?? this.isLoading,

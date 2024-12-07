@@ -19,21 +19,82 @@ class SearchSeriesBloc extends Bloc<SearchSeriesEvent, SearchSeriesState> {
       SeriesRepositoryImpl(datasource: SeriesMovieDbDatasource());
 
   SearchSeriesBloc() : super(const SearchSeriesState()) {
-    on<MakeQuery>((event, emit) async {
-      if (state.isLoading || event.query.length < 3) {
-        return; //TODO: add debouncer
+    on<MakeQuery>(_downloadSearchResults);
+    on<LoadNextPage>(_loadMoreItems);
+  }
+
+  void _downloadSearchResults(
+      MakeQuery event, Emitter<SearchSeriesState> emit) async {
+    var query = event.query;
+    if (state.isLoading ||
+        query.isEmpty ||
+        query == state.lastQuery ||
+        query.length < 2) {
+      print('Make query: will skip query $query');
+      return;
+    }
+    print('Make query: will make query $query');
+    page = 1;
+    emit(state.copyWith(isLoading: true, lastQuery: query));
+    try {
+      //delay to simulate slower internet
+      await Future.delayed(const Duration(milliseconds: 300));
+      final series = await repository.getSearchList(page, query);
+      emit(state.copyWith(isLoading: false, series: {...series}));
+      print('Make query: results returned: ${series.length}');
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
       }
-      page = 1;
-      emit(state.copyWith(isLoading: true, lastQuery: event.query));
-      try {
-        final series = await repository.getSearchList(page, event.query);
-        emit(state.copyWith(isLoading: false, series: series));
-      } catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
-        emit(state.copyWith(isLoading: false, isError: true));
+      emit(state.copyWith(isLoading: false, isError: true, series: {}));
+    }
+  }
+
+  Future<void> downloadAndEmitResults(
+      Emitter<SearchSeriesState> emit, String query) async {
+    emit(state.copyWith(isLoading: true, lastQuery: query));
+    try {
+      //delay to simulate slower internet
+      await Future.delayed(const Duration(milliseconds: 300));
+      final series = await repository.getSearchList(page, query);
+      emit(state.copyWith(isLoading: false, series: {...series}));
+      print('Make query: results returned: ${series.length}');
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
       }
-    });
+      emit(state.copyWith(isLoading: false, isError: true, series: {}));
+    }
+  }
+
+  Future<void> _loadMoreItems(
+      LoadNextPage event, Emitter<SearchSeriesState> emit) async {
+    var query = state.lastQuery;
+    if (state.isLoading ||
+        query.isEmpty ||
+        query.length < 2 ||
+        state.isLastBatch) {
+      print('Make query: will skip load more query $query');
+      return;
+    }
+    page++;
+    emit(state.copyWith(isLoading: true, lastQuery: query));
+    try {
+      //delay to simulate slower internet
+      await Future.delayed(const Duration(milliseconds: 300));
+      final series = await repository.getSearchList(page, query);
+      if (series.isNotEmpty) {
+        emit(state
+            .copyWith(isLoading: false, series: {...state.series, ...series}));
+      } else {
+        emit(state.copyWith(isLoading: false, isLastBatch: true));
+      }
+      print('Make query: results returned: ${series.length}');
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      emit(state.copyWith(isLoading: false, isError: true, series: {}));
+    }
   }
 }
