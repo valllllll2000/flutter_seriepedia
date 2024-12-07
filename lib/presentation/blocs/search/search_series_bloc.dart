@@ -30,10 +30,14 @@ class SearchSeriesBloc extends Bloc<SearchSeriesEvent, SearchSeriesState> {
         query.isEmpty ||
         query == state.lastQuery ||
         query.length < 2) {
-      print('Make query: will skip query $query');
+      if (kDebugMode) {
+        print('Make query: will skip query $query');
+      }
       return;
     }
-    print('Make query: will make query $query');
+    if (kDebugMode) {
+      print('Make query: will make query $query');
+    }
     page = 1;
     emit(state.copyWith(isLoading: true, lastQuery: query));
     try {
@@ -58,7 +62,9 @@ class SearchSeriesBloc extends Bloc<SearchSeriesEvent, SearchSeriesState> {
       await Future.delayed(const Duration(milliseconds: 300));
       final series = await repository.getSearchList(page, query);
       emit(state.copyWith(isLoading: false, series: {...series}));
-      print('Make query: results returned: ${series.length}');
+      if (kDebugMode) {
+        print('Make query: results returned: ${series.length}');
+      }
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -74,7 +80,9 @@ class SearchSeriesBloc extends Bloc<SearchSeriesEvent, SearchSeriesState> {
         query.isEmpty ||
         query.length < 2 ||
         state.isLastBatch) {
-      print('Make query: will skip load more query $query');
+      if (kDebugMode) {
+        print('Make query: will skip load more query $query');
+      }
       return;
     }
     page++;
@@ -89,7 +97,9 @@ class SearchSeriesBloc extends Bloc<SearchSeriesEvent, SearchSeriesState> {
       } else {
         emit(state.copyWith(isLoading: false, isLastBatch: true));
       }
-      print('Make query: results returned: ${series.length}');
+      if (kDebugMode) {
+        print('Make query: results returned: ${series.length}');
+      }
     } catch (e) {
       if (kDebugMode) {
         print(e);
